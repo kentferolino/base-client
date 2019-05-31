@@ -9,6 +9,11 @@ import { addItem } from "../actions/itemActions";
 import Button from "@material-ui/core/Button";
 
 class Shopping extends Component {
+  static propTypes = {
+    auth: PropTypes.object.isRequired,
+    addItem: PropTypes.func.isRequired
+  };
+
   state = {
     itemModal: false
   };

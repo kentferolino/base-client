@@ -2,8 +2,14 @@ import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import PropTypes from "prop-types";
 
 class ItemForm extends Component {
+  static propTypes = {
+    addItem: PropTypes.func.isRequired,
+    toggle: PropTypes.func.isRequired
+  };
+
   state = {
     modal: false
   };

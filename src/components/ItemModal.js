@@ -6,7 +6,9 @@ import PropTypes from "prop-types";
 import ItemForm from "./ItemForm";
 
 class ItemModal extends Component {
-  static propTypes = {};
+  static propTypes = {
+    visible: PropTypes.bool.isRequired
+  };
 
   render() {
     const { visible, toggle, addItem } = this.props;

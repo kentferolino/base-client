@@ -21,7 +21,7 @@ const styles = theme => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    padding: theme.spacing(3)
   }
 });
 
@@ -46,13 +46,17 @@ function PrivateRoute({ component: Component, auth, ...rest }) {
 }
 
 class Main extends Component {
-  static propTypes = {};
+  static propTypes = {
+    auth: PropTypes.object.isRequired,
+    classes: PropTypes.object
+  };
+
   render() {
     const { auth, classes } = this.props;
     return (
       <Fragment>
         {auth.isLoading !== true && (
-          <div class={classes.root}>
+          <div className={classes.root}>
             <AppNavbar isAuthenticated={auth.isAuthenticated} />
             <main className={classes.content}>
               <div className={classes.toolbar} />
@@ -78,7 +82,6 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => ({
-  item: state.item,
   auth: state.auth
 });
 
