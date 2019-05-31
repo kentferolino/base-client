@@ -1,28 +1,28 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
-import { Route, Redirect } from "react-router-dom";
-import Shopping from "./Shopping";
-import Home from "./Home";
-import Front from "./Front";
-import { connect } from "react-redux";
-import AppNavbar from "./navs/AppNavbar";
-import { withStyles } from "@material-ui/core/styles";
+import React, { Component, Fragment } from 'react';
+import { Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import Shopping from './Shopping';
+import Home from './Home';
+import Front from './Front';
+import AppNavbar from './navs/AppNavbar';
 
 const styles = theme => ({
   root: {
-    display: "flex"
+    display: 'flex',
   },
   toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3)
-  }
+    padding: theme.spacing(3),
+  },
 });
 
 function PrivateRoute({ component: Component, auth, ...rest }) {
@@ -35,8 +35,8 @@ function PrivateRoute({ component: Component, auth, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: "/",
-              state: { from: props.location }
+              pathname: '/',
+              state: { from: props.location },
             }}
           />
         )
@@ -48,7 +48,7 @@ function PrivateRoute({ component: Component, auth, ...rest }) {
 class Main extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    classes: PropTypes.object
+    classes: PropTypes.object,
   };
 
   render() {
@@ -64,11 +64,7 @@ class Main extends Component {
                 exact
                 path="/"
                 render={props => {
-                  return auth.isAuthenticated ? (
-                    <Home auth={auth} />
-                  ) : (
-                    <Front />
-                  );
+                  return auth.isAuthenticated ? <Home auth={auth} /> : <Front />;
                 }}
               />
               <PrivateRoute path="/home" component={Home} auth={auth} />
@@ -82,10 +78,10 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth
+  auth: state.auth,
 });
 
 export default connect(
   mapStateToProps,
-  null
+  null,
 )(withStyles(styles, { withTheme: true })(Main));

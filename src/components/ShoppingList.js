@@ -6,9 +6,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
-import { getItems, deleteItem } from '../actions/itemActions';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { getItems, deleteItem } from '../actions/itemActions';
 
 const styles = theme => ({
   root: {
@@ -22,12 +22,20 @@ class ShoppingList extends Component {
   static propTypes = {
     getItems: PropTypes.func.isRequired,
     item: PropTypes.object.isRequired,
-    isAuthenticated: PropTypes.bool
+    isAuthenticated: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    isAuthenticated: false,
   };
 
   componentDidMount() {
     this.props.getItems();
   }
+
+  onDeleteClick = id => {
+    this.props.deleteItem(id);
+  };
 
   render() {
     const { items } = this.props.item;
@@ -40,10 +48,9 @@ class ShoppingList extends Component {
               <CSSTransition key={item._id} timeout={500} classNames="fade">
                 <ListItem button>
                   <ListItemIcon>
-                    {isAuthenticated && <DeleteIcon
-                      color="secondary"
-                      onClick={() => this.onDeleteClick(item._id)}
-                    />}
+                    {isAuthenticated && (
+                      <DeleteIcon color="secondary" onClick={() => this.onDeleteClick(item._id)} />
+                    )}
                   </ListItemIcon>
                   <ListItemText primary={item.name} />
                 </ListItem>
@@ -54,10 +61,6 @@ class ShoppingList extends Component {
       </div>
     );
   }
-
-  onDeleteClick = id => {
-    this.props.deleteItem(id);
-  };
 }
 
 const mapStateToProps = state => ({
@@ -67,5 +70,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getItems, deleteItem }
+  { getItems, deleteItem },
 )(withStyles(styles)(ShoppingList));
