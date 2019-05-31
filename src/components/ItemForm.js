@@ -16,7 +16,7 @@ class ItemForm extends Component {
     e.preventDefault();
     const newItem = { name: this.state.name };
     this.props.addItem(newItem);
-    this.toggle();
+    this.props.toggle();
   };
 
   render() {
