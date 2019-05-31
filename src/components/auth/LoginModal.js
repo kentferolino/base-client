@@ -8,10 +8,30 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { login } from '../../actions/authActions'
-import { clearErrors } from '../../actions/errorActions'
+import { login } from '../../actions/authActions';
+import { clearErrors } from '../../actions/errorActions';
 
 class LoginModal extends Component {
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.shape({
+      msg: PropTypes.string,
+      status: PropTypes.string,
+      id: PropTypes.string,
+    }),
+    login: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    isAuthenticated: false,
+    error: {
+      msg: {},
+      status: null,
+      id: null,
+    },
+  };
+
   state = {
     modal: false,
     email: '',
@@ -19,28 +39,20 @@ class LoginModal extends Component {
     msg: null,
   };
 
-  static propTypes = {
-    isAuthenticated: PropTypes.bool,
-    error: PropTypes.object.isRequired,
-    login: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired,
-  }
-
   componentDidUpdate(prevProps) {
+    const { modal } = this.state;
     const { error, isAuthenticated } = this.props;
     if (error !== prevProps.error) {
-
       // Check for register error
       if (error.id === 'LOGIN_FAIL') {
-        this.setState({ msg: error.msg.msg })
-      }
-      else {
-        this.setState({ msg: null })
+        this.setState({ msg: error.msg.msg });
+      } else {
+        this.setState({ msg: null });
       }
     }
 
     // Close modal after being authenticated.
-    if (this.state.modal && isAuthenticated) {
+    if (modal && isAuthenticated) {
       this.toggle();
     }
   }
@@ -62,7 +74,7 @@ class LoginModal extends Component {
     // Create user object
     const user = {
       email,
-      password
+      password,
     };
 
     // Attempt to register
@@ -72,16 +84,19 @@ class LoginModal extends Component {
   render() {
     return (
       <div>
-        <Button onClick={this.toggle} href='#' >
+        <Button onClick={this.toggle} href="#">
           Login
-				</Button>
+        </Button>
         <Dialog open={this.state.modal} onClose={this.toggle}>
-          <DialogTitle onClose={this.toggle} id="login-dialog-title">Login</DialogTitle>
+          <DialogTitle onClose={this.toggle} id="login-dialog-title">
+            Login
+          </DialogTitle>
           <DialogContent>
-            {this.state.msg ?
-              (<DialogContentText id="alert-dialog-description" color="secondary">{this.state.msg}</DialogContentText>)
-              : null
-            }
+            {this.state.msg ? (
+              <DialogContentText id="alert-dialog-description" color="secondary">
+                {this.state.msg}
+              </DialogContentText>
+            ) : null}
             <TextField
               autoFocus
               margin="dense"
@@ -102,9 +117,7 @@ class LoginModal extends Component {
               fullWidth
             />
             <DialogActions>
-              <Button onClick={this.onSubmit}>
-                Login
-              </Button>
+              <Button onClick={this.onSubmit}>Login</Button>
             </DialogActions>
           </DialogContent>
         </Dialog>
@@ -115,10 +128,10 @@ class LoginModal extends Component {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  error: state.error
+  error: state.error,
 });
 
 export default connect(
   mapStateToProps,
-  { login, clearErrors }
+  { login, clearErrors },
 )(LoginModal);
