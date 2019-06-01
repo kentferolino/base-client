@@ -15,8 +15,8 @@ class LoginModal extends Component {
   static propTypes = {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.shape({
-      msg: PropTypes.string,
-      status: PropTypes.string,
+      msg: PropTypes.shape({ msg: PropTypes.string }),
+      status: PropTypes.number,
       id: PropTypes.string,
     }),
     login: PropTypes.func.isRequired,
@@ -36,20 +36,11 @@ class LoginModal extends Component {
     modal: false,
     email: '',
     password: '',
-    msg: null,
   };
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
     const { modal } = this.state;
-    const { error, isAuthenticated } = this.props;
-    if (error !== prevProps.error) {
-      // Check for register error
-      if (error.id === 'LOGIN_FAIL') {
-        this.setState({ msg: error.msg.msg });
-      } else {
-        this.setState({ msg: null });
-      }
-    }
+    const { isAuthenticated } = this.props;
 
     // Close modal after being authenticated.
     if (modal && isAuthenticated) {
@@ -58,8 +49,10 @@ class LoginModal extends Component {
   }
 
   toggle = () => {
-    this.props.clearErrors();
-    this.setState({ modal: !this.state.modal });
+    const { clearErrors: clearErrorsAction } = this.props;
+    clearErrorsAction();
+    const { modal } = this.state;
+    this.setState({ modal: !modal });
   };
 
   onChange = e => {
@@ -70,6 +63,7 @@ class LoginModal extends Component {
     e.preventDefault();
 
     const { email, password } = this.state;
+    const { login: loginAction } = this.props;
 
     // Create user object
     const user = {
@@ -78,23 +72,27 @@ class LoginModal extends Component {
     };
 
     // Attempt to register
-    this.props.login(user);
+    loginAction(user);
   };
 
   render() {
+    const { modal } = this.state;
+    const { error } = this.props;
+    const { id: errorId } = error || null;
+    const errorMessage = errorId === 'LOGIN_FAIL' && error ? error.msg.msg : null || null;
     return (
       <div>
         <Button onClick={this.toggle} href="#">
           Login
         </Button>
-        <Dialog open={this.state.modal} onClose={this.toggle}>
+        <Dialog open={modal} onClose={this.toggle}>
           <DialogTitle onClose={this.toggle} id="login-dialog-title">
             Login
           </DialogTitle>
           <DialogContent>
-            {this.state.msg ? (
+            {errorMessage ? (
               <DialogContentText id="alert-dialog-description" color="secondary">
-                {this.state.msg}
+                {errorMessage}
               </DialogContentText>
             ) : null}
             <TextField
