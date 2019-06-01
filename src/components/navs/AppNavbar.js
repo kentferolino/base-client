@@ -1,43 +1,43 @@
-import React, { Fragment } from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import { withStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
-import Navbar from "./Navbar";
-import { Link } from "react-router-dom";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import MailIcon from '@material-ui/icons/Mail';
+import { Link } from 'react-router-dom';
+import Navbar from './Navbar';
 
 const routes = [
   {
-    path: "/",
+    path: '/',
     main: () => <h2>Home</h2>,
-    label: "Home"
+    label: 'Home',
   },
   {
-    path: "/shop",
+    path: '/shop',
     main: () => <h2>Shop</h2>,
-    label: "Shop"
+    label: 'Shop',
   },
   {
-    path: "/bubblegum",
+    path: '/bubblegum',
     main: () => <h2>Bubblegum</h2>,
-    label: "Bubblegum"
+    label: 'Bubblegum',
   },
   {
-    path: "/shoelaces",
+    path: '/shoelaces',
     main: () => <h2>Shoelaces</h2>,
-    label: "Shoelaces"
-  }
+    label: 'Shoelaces',
+  },
 ];
 
 const drawerWidth = 240;
@@ -45,64 +45,74 @@ const drawerWidth = 240;
 const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
-    })
+      duration: theme.transitions.duration.leavingScreen,
+    }),
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["width", "margin"], {
+    transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   menuButton: {
     marginLeft: 12,
-    marginRight: 36
+    marginRight: 36,
   },
   hide: {
-    display: "none"
+    display: 'none',
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: "nowrap"
+    whiteSpace: 'nowrap',
   },
   drawerOpen: {
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen
-    })
+      duration: theme.transitions.duration.enteringScreen,
+    }),
   },
   drawerClose: {
-    transition: theme.transitions.create("width", {
+    transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen
+      duration: theme.transitions.duration.leavingScreen,
     }),
-    overflowX: "hidden",
+    overflowX: 'hidden',
     width: theme.spacing(7) + 1,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1
-    }
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9) + 1,
+    },
   },
   toolbar: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
   },
   grow: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 });
 
 class AppNavbar extends React.Component {
+  static propTypes = {
+    classes: PropTypes.instanceOf(Object).isRequired,
+    isAuthenticated: PropTypes.bool,
+    theme: PropTypes.instanceOf(Object).isRequired,
+  };
+
+  static defaultProps = {
+    isAuthenticated: false,
+  };
+
   state = {
-    open: false
+    open: false,
   };
 
   handleDrawerOpen = () => {
@@ -115,13 +125,14 @@ class AppNavbar extends React.Component {
 
   render() {
     const { classes, theme, isAuthenticated } = this.props;
+    const { open } = this.state;
 
     return (
       <Fragment>
         <CssBaseline />
         <Navbar
           classes={classes}
-          open={this.state.open}
+          open={open}
           doDrawerOpen={this.handleDrawerOpen}
           isAuthenticated={isAuthenticated}
         />
@@ -129,38 +140,27 @@ class AppNavbar extends React.Component {
           <Drawer
             variant="permanent"
             className={classNames(classes.drawer, {
-              [classes.drawerOpen]: this.state.open,
-              [classes.drawerClose]: !this.state.open
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
             })}
             classes={{
               paper: classNames({
-                [classes.drawerOpen]: this.state.open,
-                [classes.drawerClose]: !this.state.open
-              })
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+              }),
             }}
-            open={this.state.open}
+            open={open}
           >
             <div className={classes.toolbar}>
               <IconButton onClick={this.handleDrawerClose}>
-                {theme.direction === "rtl" ? (
-                  <ChevronRightIcon />
-                ) : (
-                  <ChevronLeftIcon />
-                )}
+                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
               </IconButton>
             </div>
             <Divider />
             <List>
               {routes.map((route, index) => (
-                <ListItem
-                  component={Link}
-                  to={route.path}
-                  key={route.path}
-                  button
-                >
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
+                <ListItem component={Link} to={route.path} key={route.path} button>
+                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
                   <ListItemText primary={route.label} />
                 </ListItem>
               ))}
@@ -171,10 +171,5 @@ class AppNavbar extends React.Component {
     );
   }
 }
-
-AppNavbar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
-};
 
 export default withStyles(styles, { withTheme: true })(AppNavbar);
