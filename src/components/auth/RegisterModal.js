@@ -8,130 +8,146 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { register } from '../../actions/authActions'
-import { clearErrors } from '../../actions/errorActions'
+import { register } from '../../actions/authActions';
+import { clearErrors } from '../../actions/errorActions';
 
 class RegisterModal extends Component {
-	state = {
-		modal: false,
-		name: '',
-		email: '',
-		password: '',
-		msg: null,
-	};
+  state = {
+    modal: false,
+    name: '',
+    email: '',
+    password: '',
+  };
 
-	static propTypes = {
-		isAuthenticated: PropTypes.bool,
-		error: PropTypes.object.isRequired,
-		register: PropTypes.func.isRequired,
-		clearErrors: PropTypes.func.isRequired,
-	}
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.shape({
+      msg: PropTypes.shape({ msg: PropTypes.string }),
+      status: PropTypes.number,
+      id: PropTypes.string,
+    }),
+    registerAction: PropTypes.func.isRequired,
+    clearErrorsAction: PropTypes.func.isRequired,
+  };
 
-	componentDidUpdate(prevProps) {
-		const { error, isAuthenticated } = this.props;
-		if (error !== prevProps.error) {
+  static defaultProps = {
+    isAuthenticated: false,
+    error: {
+      msg: {},
+      status: null,
+      id: null,
+    },
+  };
 
-			// Check for register error
-			if (error.id === 'REGISTER_FAIL') {
-				this.setState({ msg: error.msg.msg })
-			}
-			else {
-				this.setState({ msg: null })
-			}
-		}
+  componentDidUpdate() {
+    const { modal } = this.state;
+    const { isAuthenticated } = this.props;
 
-		// Close modal after being authenticated.
-		if (this.state.modal && isAuthenticated) {
-			this.toggle();
-		}
-	}
+    // Close modal after being authenticated.
+    if (modal && isAuthenticated) {
+      this.toggle();
+    }
+  }
 
-	toggle = () => {
-		this.props.clearErrors();
-		this.setState({ modal: !this.state.modal });
-	};
+  toggle = () => {
+    const { modal } = this.state;
+    const { clearErrorsAction } = this.props;
+    clearErrorsAction();
+    this.setState({ modal: !modal });
+  };
 
-	onChange = e => {
-		this.setState({ [e.target.name]: e.target.value });
-	};
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-	onSubmit = e => {
-		e.preventDefault();
+  onSubmit = e => {
+    e.preventDefault();
 
-		const { name, email, password } = this.state;
+    const { name, email, password } = this.state;
+    const { registerAction } = this.props;
 
-		// Create user object
-		const newUser = {
-			name,
-			email,
-			password
-		};
+    // Create user object
+    const newUser = {
+      name,
+      email,
+      password,
+    };
 
-		// Attempt to register
-		this.props.register(newUser);
-	};
+    // Attempt to register
+    registerAction(newUser);
+  };
 
-	render() {
-		return (
-			<div onClick={this.toggle}>
-				<Button onClick={this.toggle} href='#' >
-					Register
-				</Button>
-				<Dialog open={this.state.modal} onClose={this.toggle}>
-					<DialogTitle onClose={this.toggle} id="register-dialog-title">Register</DialogTitle>
-					<DialogContent>
-						{this.state.msg ?
-							(<DialogContentText id="alert-dialog-description" color="secondary">{this.state.msg}</DialogContentText>)
-							: null
-						}
-						<TextField
-							autoFocus
-							margin="dense"
-							label="Name"
-							type="text"
-							name="name"
-							id="name"
-							onChange={this.onChange}
-							fullWidth
-						/>
-						<TextField
-							autoFocus
-							margin="dense"
-							label="Email Address"
-							type="email"
-							name="email"
-							id="email"
-							onChange={this.onChange}
-							fullWidth
-						/>
-						<TextField
-							autoFocus
-							margin="dense"
-							label="Password"
-							type="password"
-							name="password"
-							id="password"
-							onChange={this.onChange}
-							fullWidth
-						/>
-						<DialogActions>
-							<Button onClick={this.onSubmit}>
-								Register
+  render() {
+    const { modal } = this.state;
+    const { error } = this.props;
+    const { id: errorId } = error || null;
+    const errorMessage = errorId === 'REGISTER_FAIL' && error ? error.msg.msg : null || null;
+
+    return (
+      <div>
+        <Button onClick={this.toggle} href="#">
+          Register
+        </Button>
+        <Dialog open={modal} onClose={this.toggle} aria-labelledby="register-dialog-title">
+          <DialogTitle onClose={this.toggle} id="register-dialog-title">
+            Register
+          </DialogTitle>
+          <DialogContent>
+            {errorMessage ? (
+              <DialogContentText id="alert-dialog-description" color="secondary">
+                {errorMessage}
+              </DialogContentText>
+            ) : null}
+            <TextField
+              autoFocus
+              margin="dense"
+              label="Name"
+              type="text"
+              name="name"
+              id="name"
+              onChange={this.onChange}
+              fullWidth
+            />
+            <TextField
+              margin="dense"
+              label="Email Address"
+              type="email"
+              name="email"
+              id="email"
+              onChange={this.onChange}
+              fullWidth
+            />
+            <TextField
+              margin="dense"
+              label="Password"
+              type="password"
+              name="password"
+              id="password"
+              onChange={this.onChange}
+              fullWidth
+            />
+            <DialogActions>
+              <Button onClick={this.toggle}>Cancel</Button>
+              <Button onClick={this.onSubmit} color="primary" variant="outlined">
+                Register
               </Button>
-						</DialogActions>
-					</DialogContent>
-				</Dialog>
-			</div>
-		);
-	}
+            </DialogActions>
+          </DialogContent>
+        </Dialog>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
-	isAuthenticated: state.auth.isAuthenticated,
-	error: state.error
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.error,
 });
 
 export default connect(
-	mapStateToProps,
-	{ register, clearErrors }
+  mapStateToProps,
+  {
+    registerAction: register,
+    clearErrorsAction: clearErrors,
+  },
 )(RegisterModal);

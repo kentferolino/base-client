@@ -19,8 +19,8 @@ class LoginModal extends Component {
       status: PropTypes.number,
       id: PropTypes.string,
     }),
-    login: PropTypes.func.isRequired,
-    clearErrors: PropTypes.func.isRequired,
+    loginAction: PropTypes.func.isRequired,
+    clearErrorsAction: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -49,7 +49,7 @@ class LoginModal extends Component {
   }
 
   toggle = () => {
-    const { clearErrors: clearErrorsAction } = this.props;
+    const { clearErrorsAction } = this.props;
     clearErrorsAction();
     const { modal } = this.state;
     this.setState({ modal: !modal });
@@ -63,7 +63,7 @@ class LoginModal extends Component {
     e.preventDefault();
 
     const { email, password } = this.state;
-    const { login: loginAction } = this.props;
+    const { loginAction } = this.props;
 
     // Create user object
     const user = {
@@ -115,7 +115,10 @@ class LoginModal extends Component {
               fullWidth
             />
             <DialogActions>
-              <Button onClick={this.onSubmit}>Login</Button>
+              <Button onClick={this.toggle}>Cancel</Button>
+              <Button onClick={this.onSubmit} color="primary" variant="outlined">
+                Login
+              </Button>
             </DialogActions>
           </DialogContent>
         </Dialog>
@@ -131,5 +134,8 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { login, clearErrors },
+  {
+    loginAction: login,
+    clearErrorsAction: clearErrors,
+  },
 )(LoginModal);
