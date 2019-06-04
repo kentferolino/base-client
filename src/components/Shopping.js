@@ -22,7 +22,7 @@ const Shopping = ({ auth, addItemAction }) => {
         <h4 className="mb-3 ml-4">Please login to manage items</h4>
       )}
       <ItemModal visible={itemModal} toggle={toggle} addItem={addItemAction} />
-      <ShoppingList />
+      <ShoppingList isAuthenticated={isAuthenticated} />
     </div>
   );
 };

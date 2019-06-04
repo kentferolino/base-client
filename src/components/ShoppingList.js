@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+/* eslint-disable no-underscore-dangle */
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -18,53 +19,60 @@ const styles = theme => ({
   },
 });
 
-class ShoppingList extends Component {
-  static propTypes = {
-    getItems: PropTypes.func.isRequired,
-    item: PropTypes.object.isRequired,
-    isAuthenticated: PropTypes.bool,
+const ShoppingList = ({
+  getItems: getItemsAction,
+  items,
+  isAuthenticated,
+  deleteItem: deleteItemAction,
+}) => {
+  const onDeleteClick = id => {
+    deleteItemAction(id);
   };
 
-  static defaultProps = {
-    isAuthenticated: false,
-  };
+  useEffect(() => {
+    getItemsAction();
+  }, []);
 
-  componentDidMount() {
-    this.props.getItems();
-  }
+  return (
+    <div>
+      <List component="nav">
+        <TransitionGroup className="shopping-list">
+          {items.map(item => (
+            <CSSTransition key={item._id} timeout={500} classNames="fade">
+              <ListItem button>
+                <ListItemIcon>
+                  {isAuthenticated && (
+                    <DeleteIcon color="secondary" onClick={() => onDeleteClick(item._id)} />
+                  )}
+                </ListItemIcon>
+                <ListItemText primary={item.name} />
+              </ListItem>
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
+      </List>
+    </div>
+  );
+};
 
-  onDeleteClick = id => {
-    this.props.deleteItem(id);
-  };
+ShoppingList.propTypes = {
+  getItems: PropTypes.func.isRequired,
+  deleteItem: PropTypes.func.isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string,
+      name: PropTypes.string,
+    }),
+  ).isRequired,
+  isAuthenticated: PropTypes.bool,
+};
 
-  render() {
-    const { items } = this.props.item;
-    const { isAuthenticated } = this.props.auth;
-    return (
-      <div>
-        <List component="nav">
-          <TransitionGroup className="shopping-list">
-            {items.map(item => (
-              <CSSTransition key={item._id} timeout={500} classNames="fade">
-                <ListItem button>
-                  <ListItemIcon>
-                    {isAuthenticated && (
-                      <DeleteIcon color="secondary" onClick={() => this.onDeleteClick(item._id)} />
-                    )}
-                  </ListItemIcon>
-                  <ListItemText primary={item.name} />
-                </ListItem>
-              </CSSTransition>
-            ))}
-          </TransitionGroup>
-        </List>
-      </div>
-    );
-  }
-}
+ShoppingList.defaultProps = {
+  isAuthenticated: false,
+};
 
 const mapStateToProps = state => ({
-  item: state.item,
+  items: state.items.items,
   auth: state.auth,
 });
 
