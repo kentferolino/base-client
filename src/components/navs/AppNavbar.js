@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
@@ -100,8 +100,8 @@ const styles = theme => ({
   },
 });
 
-class AppNavbar extends React.Component {
-  static propTypes = {
+const AppNavbar = props => {
+  AppNavbar.propTypes = {
     classes: PropTypes.instanceOf(Object).isRequired,
     auth: PropTypes.shape({
       token: PropTypes.string,
@@ -112,7 +112,7 @@ class AppNavbar extends React.Component {
     theme: PropTypes.instanceOf(Object).isRequired,
   };
 
-  static defaultProps = {
+  AppNavbar.defaultProps = {
     auth: {
       token: null,
       isAuthenticated: null,
@@ -121,67 +121,61 @@ class AppNavbar extends React.Component {
     },
   };
 
-  state = {
-    open: false,
+  const { classes, theme, auth } = props;
+  const { isAuthenticated = false, user = null } = auth;
+
+  const [open, setOpen] = useState(false);
+  const handleDrawerOpen = () => {
+    setOpen(true);
   };
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
 
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
-
-  render() {
-    const { classes, theme, auth } = this.props;
-    const { isAuthenticated = false, user = null } = auth;
-    const { open } = this.state;
-
-    return (
-      <Fragment>
-        <CssBaseline />
-        <Navbar
-          classes={classes}
-          open={open}
-          doDrawerOpen={this.handleDrawerOpen}
-          isAuthenticated={isAuthenticated}
-          user={user}
-        />
-        {isAuthenticated && (
-          <Drawer
-            variant="permanent"
-            className={classNames(classes.drawer, {
+  return (
+    <Fragment>
+      <CssBaseline />
+      <Navbar
+        classes={classes}
+        open={open}
+        doDrawerOpen={handleDrawerOpen}
+        isAuthenticated={isAuthenticated}
+        user={user}
+      />
+      {isAuthenticated && (
+        <Drawer
+          variant="permanent"
+          className={classNames(classes.drawer, {
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open,
+          })}
+          classes={{
+            paper: classNames({
               [classes.drawerOpen]: open,
               [classes.drawerClose]: !open,
-            })}
-            classes={{
-              paper: classNames({
-                [classes.drawerOpen]: open,
-                [classes.drawerClose]: !open,
-              }),
-            }}
-            open={open}
-          >
-            <div className={classes.toolbar}>
-              <IconButton onClick={this.handleDrawerClose}>
-                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-              </IconButton>
-            </div>
-            <Divider />
-            <List>
-              {routes.map((route, index) => (
-                <ListItem component={Link} to={route.path} key={route.path} button>
-                  <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                  <ListItemText primary={route.label} />
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
-        )}
-      </Fragment>
-    );
-  }
-}
+            }),
+          }}
+          open={open}
+        >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerClose}>
+              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+            </IconButton>
+          </div>
+          <Divider />
+          <List>
+            {routes.map((route, index) => (
+              <ListItem component={Link} to={route.path} key={route.path} button>
+                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemText primary={route.label} />
+              </ListItem>
+            ))}
+          </List>
+        </Drawer>
+      )}
+    </Fragment>
+  );
+};
 
 export default withStyles(styles, { withTheme: true })(AppNavbar);
