@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import classNames from 'classnames';
@@ -11,67 +11,65 @@ import RegisterModal from '../auth/RegisterModal';
 import Logout from '../auth/Logout';
 import LoginModal from '../auth/LoginModal';
 
-class Navbar extends PureComponent {
-  static propTypes = {
-    doDrawerOpen: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    classes: PropTypes.instanceOf(Object).isRequired,
-    isAuthenticated: PropTypes.bool,
-    user: PropTypes.instanceOf(Object),
-  };
+const Navbar = props => {
+  const { classes, open, doDrawerOpen, isAuthenticated = false, user = null } = props;
 
-  static defaultProps = {
-    isAuthenticated: null,
-    user: null,
-  };
+  const authLinks = (
+    <Fragment>
+      <span className="navbar-text mr-3">
+        <strong>{user ? `Welcome ${user.name}` : ''}</strong>
+      </span>
+      <Logout />
+    </Fragment>
+  );
 
-  render() {
-    const { classes, open, doDrawerOpen, isAuthenticated = false, user = null } = this.props;
+  const guestLinks = (
+    <Fragment>
+      <RegisterModal />
+      <LoginModal />
+    </Fragment>
+  );
 
-    const authLinks = (
-      <Fragment>
-        <span className="navbar-text mr-3">
-          <strong>{user ? `Welcome ${user.name}` : ''}</strong>
-        </span>
-        <Logout />
-      </Fragment>
-    );
+  return (
+    <AppBar
+      position="fixed"
+      className={classNames(classes.appBar, {
+        [classes.appBarShift]: open,
+      })}
+    >
+      <Toolbar disableGutters={!open}>
+        {isAuthenticated && (
+          <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            onClick={doDrawerOpen}
+            className={classNames(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
+        <Typography variant="h6" color="inherit" className={classes.grow}>
+          {isAuthenticated ? <Link to="/shop">Shopping List</Link> : <Link to="/">Shopping</Link>}
+        </Typography>
+        {isAuthenticated ? authLinks : guestLinks}
+      </Toolbar>
+    </AppBar>
+  );
+};
 
-    const guestLinks = (
-      <Fragment>
-        <RegisterModal />
-        <LoginModal />
-      </Fragment>
-    );
+Navbar.propTypes = {
+  doDrawerOpen: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  classes: PropTypes.instanceOf(Object).isRequired,
+  isAuthenticated: PropTypes.bool,
+  user: PropTypes.instanceOf(Object),
+};
 
-    return (
-      <AppBar
-        position="fixed"
-        className={classNames(classes.appBar, {
-          [classes.appBarShift]: open,
-        })}
-      >
-        <Toolbar disableGutters={!open}>
-          {isAuthenticated && (
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={doDrawerOpen}
-              className={classNames(classes.menuButton, {
-                [classes.hide]: open,
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            {isAuthenticated ? <Link to="/shop">Shopping List</Link> : <Link to="/">Shopping</Link>}
-          </Typography>
-          {isAuthenticated ? authLinks : guestLinks}
-        </Toolbar>
-      </AppBar>
-    );
-  }
-}
+Navbar.defaultProps = {
+  isAuthenticated: null,
+  user: null,
+};
 
 export default Navbar;
