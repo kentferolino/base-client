@@ -1,6 +1,5 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,26 +16,17 @@ class Navbar extends PureComponent {
     doDrawerOpen: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     classes: PropTypes.instanceOf(Object).isRequired,
-    auth: PropTypes.shape({
-      token: PropTypes.string,
-      isAuthenticated: PropTypes.bool,
-      isLoading: PropTypes.bool,
-      user: PropTypes.instanceOf(Object),
-    }),
+    isAuthenticated: PropTypes.bool,
+    user: PropTypes.instanceOf(Object),
   };
 
   static defaultProps = {
-    auth: {
-      token: null,
-      isAuthenticated: null,
-      isLoading: null,
-      user: null,
-    },
+    isAuthenticated: null,
+    user: null,
   };
 
   render() {
-    const { classes, open, doDrawerOpen, auth } = this.props;
-    const { isAuthenticated = false, user = null } = auth;
+    const { classes, open, doDrawerOpen, isAuthenticated = false, user = null } = this.props;
 
     const authLinks = (
       <Fragment>
@@ -84,11 +74,4 @@ class Navbar extends PureComponent {
   }
 }
 
-const mapStateToProps = state => ({
-  auth: state.auth,
-});
-
-export default connect(
-  mapStateToProps,
-  null,
-)(Navbar);
+export default Navbar;

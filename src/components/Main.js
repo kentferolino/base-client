@@ -57,7 +57,7 @@ class Main extends Component {
       <Fragment>
         {auth.isLoading !== true && (
           <div className={classes.root}>
-            <AppNavbar isAuthenticated={auth.isAuthenticated} />
+            <AppNavbar auth={auth} />
             <main className={classes.content}>
               <div className={classes.toolbar} />
               <Route

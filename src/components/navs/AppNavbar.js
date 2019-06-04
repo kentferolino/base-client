@@ -103,12 +103,22 @@ const styles = theme => ({
 class AppNavbar extends React.Component {
   static propTypes = {
     classes: PropTypes.instanceOf(Object).isRequired,
-    isAuthenticated: PropTypes.bool,
+    auth: PropTypes.shape({
+      token: PropTypes.string,
+      isAuthenticated: PropTypes.bool,
+      isLoading: PropTypes.bool,
+      user: PropTypes.instanceOf(Object),
+    }),
     theme: PropTypes.instanceOf(Object).isRequired,
   };
 
   static defaultProps = {
-    isAuthenticated: false,
+    auth: {
+      token: null,
+      isAuthenticated: null,
+      isLoading: null,
+      user: null,
+    },
   };
 
   state = {
@@ -124,7 +134,8 @@ class AppNavbar extends React.Component {
   };
 
   render() {
-    const { classes, theme, isAuthenticated } = this.props;
+    const { classes, theme, auth } = this.props;
+    const { isAuthenticated = false, user = null } = auth;
     const { open } = this.state;
 
     return (
@@ -135,6 +146,7 @@ class AppNavbar extends React.Component {
           open={open}
           doDrawerOpen={this.handleDrawerOpen}
           isAuthenticated={isAuthenticated}
+          user={user}
         />
         {isAuthenticated && (
           <Drawer
