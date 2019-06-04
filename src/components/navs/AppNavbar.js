@@ -101,26 +101,6 @@ const styles = theme => ({
 });
 
 const AppNavbar = props => {
-  AppNavbar.propTypes = {
-    classes: PropTypes.instanceOf(Object).isRequired,
-    auth: PropTypes.shape({
-      token: PropTypes.string,
-      isAuthenticated: PropTypes.bool,
-      isLoading: PropTypes.bool,
-      user: PropTypes.instanceOf(Object),
-    }),
-    theme: PropTypes.instanceOf(Object).isRequired,
-  };
-
-  AppNavbar.defaultProps = {
-    auth: {
-      token: null,
-      isAuthenticated: null,
-      isLoading: null,
-      user: null,
-    },
-  };
-
   const { classes, theme, auth } = props;
   const { isAuthenticated = false, user = null } = auth;
 
@@ -176,6 +156,26 @@ const AppNavbar = props => {
       )}
     </Fragment>
   );
+};
+
+AppNavbar.propTypes = {
+  classes: PropTypes.instanceOf(Object).isRequired,
+  auth: PropTypes.shape({
+    token: PropTypes.string,
+    isAuthenticated: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    user: PropTypes.instanceOf(Object),
+  }),
+  theme: PropTypes.instanceOf(Object).isRequired,
+};
+
+AppNavbar.defaultProps = {
+  auth: {
+    token: null,
+    isAuthenticated: null,
+    isLoading: null,
+    user: null,
+  },
 };
 
 export default withStyles(styles, { withTheme: true })(AppNavbar);

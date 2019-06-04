@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
@@ -7,6 +7,7 @@ import Shopping from './Shopping';
 import Home from './Home';
 import Front from './Front';
 import AppNavbar from './navs/AppNavbar';
+import { addItem } from '../actions/itemActions';
 
 const styles = theme => ({
   root: {
@@ -25,18 +26,17 @@ const styles = theme => ({
   },
 });
 
-function PrivateRoute({ component: Component, auth, ...rest }) {
+function PrivateRoute({ component: AuthComponent, auth, ...rest }) {
   return (
     <Route
       {...rest}
       render={props =>
         auth.isAuthenticated ? (
-          <Component {...props} />
+          <AuthComponent {...props} {...rest} auth={auth} />
         ) : (
           <Redirect
             to={{
               pathname: '/',
-              state: { from: props.location },
             }}
           />
         )
@@ -45,37 +45,73 @@ function PrivateRoute({ component: Component, auth, ...rest }) {
   );
 }
 
-class Main extends Component {
-  static propTypes = {
-    auth: PropTypes.object.isRequired,
-    classes: PropTypes.object,
-  };
+PrivateRoute.propTypes = {
+  component: PropTypes.oneOfType([PropTypes.object, PropTypes.func]).isRequired,
+  auth: PropTypes.shape({
+    token: PropTypes.string,
+    isAuthenticated: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    user: PropTypes.instanceOf(Object),
+  }),
+};
 
-  render() {
-    const { auth, classes } = this.props;
-    return (
-      <Fragment>
-        {auth.isLoading !== true && (
-          <div className={classes.root}>
-            <AppNavbar auth={auth} />
-            <main className={classes.content}>
-              <div className={classes.toolbar} />
-              <Route
-                exact
-                path="/"
-                render={props => {
-                  return auth.isAuthenticated ? <Home auth={auth} /> : <Front />;
-                }}
-              />
-              <PrivateRoute path="/home" component={Home} auth={auth} />
-              <PrivateRoute path="/shop" component={Shopping} auth={auth} />
-            </main>
-          </div>
-        )}
-      </Fragment>
-    );
-  }
-}
+PrivateRoute.defaultProps = {
+  auth: {
+    token: null,
+    isAuthenticated: null,
+    isLoading: null,
+    user: null,
+  },
+};
+
+const Main = ({ auth, classes, addItemAction }) => {
+  return (
+    <Fragment>
+      {auth.isLoading !== true && (
+        <div className={classes.root}>
+          <AppNavbar auth={auth} />
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <Route
+              exact
+              path="/"
+              render={() => {
+                return auth.isAuthenticated ? <Home auth={auth} /> : <Front />;
+              }}
+            />
+            <PrivateRoute path="/home" component={Home} auth={auth} />
+            <PrivateRoute
+              path="/shop"
+              component={Shopping}
+              auth={auth}
+              addItemAction={addItemAction}
+            />
+          </main>
+        </div>
+      )}
+    </Fragment>
+  );
+};
+
+Main.propTypes = {
+  classes: PropTypes.instanceOf(Object).isRequired,
+  auth: PropTypes.shape({
+    token: PropTypes.string,
+    isAuthenticated: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    user: PropTypes.instanceOf(Object),
+  }),
+  addItemAction: PropTypes.func.isRequired,
+};
+
+Main.defaultProps = {
+  auth: {
+    token: null,
+    isAuthenticated: null,
+    isLoading: null,
+    user: null,
+  },
+};
 
 const mapStateToProps = state => ({
   auth: state.auth,
@@ -83,5 +119,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  null,
+  { addItemAction: addItem },
 )(withStyles(styles, { withTheme: true })(Main));

@@ -1,66 +1,49 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import ShoppingList from './ShoppingList';
 import ItemModal from './ItemModal';
 
-import { addItem } from '../actions/itemActions';
+const Shopping = ({ auth, addItemAction }) => {
+  const [itemModal, setItemModal] = useState(false);
 
-class Shopping extends Component {
-  static propTypes = {
-    auth: PropTypes.shape({
-      token: PropTypes.string,
-      isAuthenticated: PropTypes.bool,
-      isLoading: PropTypes.bool,
-      user: PropTypes.instanceOf(Object),
-    }),
-    addItemAction: PropTypes.func.isRequired,
+  const { isAuthenticated } = auth;
+
+  const toggle = () => {
+    setItemModal(!itemModal);
   };
 
-  static defaultProps = {
-    auth: {
-      token: null,
-      isAuthenticated: null,
-      isLoading: null,
-      user: null,
-    },
-  };
+  return (
+    <div>
+      {isAuthenticated ? (
+        <Button onClick={toggle}>Add Items</Button>
+      ) : (
+        <h4 className="mb-3 ml-4">Please login to manage items</h4>
+      )}
+      <ItemModal visible={itemModal} toggle={toggle} addItem={addItemAction} />
+      <ShoppingList />
+    </div>
+  );
+};
 
-  state = {
-    itemModal: false,
-  };
+Shopping.propTypes = {
+  auth: PropTypes.shape({
+    token: PropTypes.string,
+    isAuthenticated: PropTypes.bool,
+    isLoading: PropTypes.bool,
+    user: PropTypes.instanceOf(Object),
+  }),
+  addItemAction: PropTypes.func.isRequired,
+};
 
-  toggle = () => {
-    const { itemModal } = this.state;
-    this.setState({ itemModal: !itemModal });
-  };
+Shopping.defaultProps = {
+  auth: {
+    token: null,
+    isAuthenticated: null,
+    isLoading: null,
+    user: null,
+  },
+};
 
-  render() {
-    const { auth, addItemAction } = this.props;
-    const { isAuthenticated } = auth;
-    const { itemModal } = this.state;
-
-    return (
-      <div>
-        {isAuthenticated ? (
-          <Button onClick={this.toggle}>Add Items</Button>
-        ) : (
-          <h4 className="mb-3 ml-4">Please login to manage items</h4>
-        )}
-        <ItemModal visible={itemModal} toggle={this.toggle} addItem={addItemAction} />
-        <ShoppingList />
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = state => ({
-  auth: state.auth,
-});
-
-export default connect(
-  mapStateToProps,
-  { addItemAction: addItem },
-)(Shopping);
+export default Shopping;

@@ -1,30 +1,29 @@
-import React, { Component } from "react";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import PropTypes from "prop-types";
-import ItemForm from "./ItemForm";
+import React from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import PropTypes from 'prop-types';
+import ItemForm from './ItemForm';
 
-class ItemModal extends Component {
-  static propTypes = {
-    visible: PropTypes.bool.isRequired
-  };
+const ItemModal = ({ visible, toggle, addItem }) => {
+  return (
+    <div>
+      <Dialog open={visible} onClose={toggle}>
+        <DialogTitle onClose={toggle} id="add-shopping-title">
+          Add To Shopping List
+        </DialogTitle>
+        <DialogContent>
+          <ItemForm addItem={addItem} toggle={toggle} />
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
 
-  render() {
-    const { visible, toggle, addItem } = this.props;
-    return (
-      <div>
-        <Dialog open={visible} onClose={toggle}>
-          <DialogTitle onClose={toggle} id="add-shopping-title">
-            Add To Shopping List
-          </DialogTitle>
-          <DialogContent>
-            <ItemForm addItem={addItem} toggle={toggle} />
-          </DialogContent>
-        </Dialog>
-      </div>
-    );
-  }
-}
+ItemModal.propTypes = {
+  addItem: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
+  visible: PropTypes.bool.isRequired,
+};
 
 export default ItemModal;

@@ -12,7 +12,13 @@ import Logout from '../auth/Logout';
 import LoginModal from '../auth/LoginModal';
 
 const Navbar = props => {
-  const { classes, open, doDrawerOpen, isAuthenticated = false, user = null } = props;
+  const {
+    classes,
+    open,
+    doDrawerOpen,
+    isAuthenticated = false,
+    user = null,
+  } = props;
 
   const authLinks = (
     <Fragment>
@@ -51,7 +57,11 @@ const Navbar = props => {
           </IconButton>
         )}
         <Typography variant="h6" color="inherit" className={classes.grow}>
-          {isAuthenticated ? <Link to="/shop">Shopping List</Link> : <Link to="/">Shopping</Link>}
+          {isAuthenticated ? (
+            <Link to="/shop">Shopping List</Link>
+          ) : (
+            <Link to="/">Shopping</Link>
+          )}
         </Typography>
         {isAuthenticated ? authLinks : guestLinks}
       </Toolbar>
