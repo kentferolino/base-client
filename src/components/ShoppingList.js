@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -9,7 +9,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { getItems, deleteItem } from '../actions/itemActions';
+import EditIcon from '@material-ui/icons/Edit';
+import { getItems, deleteItem, updateItem } from '../actions/itemActions';
+import ItemModal from './ItemModal';
 
 const styles = theme => ({
   root: {
@@ -20,14 +22,27 @@ const styles = theme => ({
 });
 
 const ShoppingList = ({
-  getItems: getItemsAction,
+  getItemsAction,
   items,
   isAuthenticated,
-  deleteItem: deleteItemAction,
+  deleteItemAction,
+  editItemAction,
 }) => {
+  const [itemModal, setItemModal] = useState(false);
+  const [toUpdateItem, setToUpdateItem] = useState({});
+
+  const toggle = item => {
+    setItemModal(!itemModal);
+    setToUpdateItem(item);
+  };
+
   const onDeleteClick = id => {
     deleteItemAction(id);
   };
+
+  // const onEditClick = id => {
+  //   editItemAction(id);
+  // };
 
   useEffect(() => {
     getItemsAction();
@@ -35,6 +50,13 @@ const ShoppingList = ({
 
   return (
     <div>
+      <ItemModal
+        visible={itemModal}
+        toggle={toggle}
+        action={editItemAction}
+        operation="edit"
+        item={toUpdateItem}
+      />
       <List component="nav">
         <TransitionGroup className="shopping-list">
           {items.map(item => (
@@ -42,7 +64,10 @@ const ShoppingList = ({
               <ListItem button>
                 <ListItemIcon>
                   {isAuthenticated && (
-                    <DeleteIcon color="secondary" onClick={() => onDeleteClick(item._id)} />
+                    <>
+                      <DeleteIcon color="secondary" onClick={() => onDeleteClick(item._id)} />
+                      <EditIcon color="secondary" onClick={() => toggle(item)} />
+                    </>
                   )}
                 </ListItemIcon>
                 <ListItemText primary={item.name} />
@@ -56,8 +81,9 @@ const ShoppingList = ({
 };
 
 ShoppingList.propTypes = {
-  getItems: PropTypes.func.isRequired,
-  deleteItem: PropTypes.func.isRequired,
+  getItemsAction: PropTypes.func.isRequired,
+  deleteItemAction: PropTypes.func.isRequired,
+  editItemAction: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(
     PropTypes.shape({
       _id: PropTypes.string,
@@ -78,5 +104,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getItems, deleteItem },
+  { getItemsAction: getItems, deleteItemAction: deleteItem, editItemAction: updateItem },
 )(withStyles(styles)(ShoppingList));

@@ -4,8 +4,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 
-const ItemForm = props => {
-  const [values, setValues] = useState({});
+const ItemForm = ({ action, toggle, item }) => {
+  const [values, setValues] = useState(item);
 
   const onChange = event => {
     event.persist();
@@ -15,8 +15,8 @@ const ItemForm = props => {
   const onSubmit = e => {
     e.preventDefault();
     const newItem = values;
-    props.addItem(newItem);
-    props.toggle();
+    action(newItem);
+    toggle();
   };
 
   return (
@@ -30,17 +30,23 @@ const ItemForm = props => {
         id="item"
         onChange={onChange}
         fullWidth
+        value={values.name}
       />
       <DialogActions>
-        <Button onClick={onSubmit}>Add item</Button>
+        <Button onClick={onSubmit}>Submit</Button>
       </DialogActions>
     </>
   );
 };
 
 ItemForm.propTypes = {
-  addItem: PropTypes.func.isRequired,
+  action: PropTypes.func.isRequired,
   toggle: PropTypes.func.isRequired,
+  item: PropTypes.shape({ _id: PropTypes.string, name: PropTypes.string }),
+};
+
+ItemForm.defaultProps = {
+  item: { _id: null, name: null },
 };
 
 export default ItemForm;
