@@ -8,24 +8,17 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import RegisterModal from '../auth/RegisterModal';
-import Logout from '../auth/Logout';
 import LoginModal from '../auth/LoginModal';
+import UserMenu from './UserMenu';
 
 const Navbar = props => {
-  const {
-    classes,
-    open,
-    doDrawerOpen,
-    isAuthenticated = false,
-    user = null,
-  } = props;
+  const { classes, open, doDrawerOpen, isAuthenticated = false, user = null } = props;
 
   const authLinks = (
     <Fragment>
       <span className="navbar-text mr-3">
-        <strong>{user ? `Welcome ${user.name}` : ''}</strong>
+        <UserMenu name={user ? user.name : ''} />
       </span>
-      <Logout />
     </Fragment>
   );
 
@@ -57,11 +50,7 @@ const Navbar = props => {
           </IconButton>
         )}
         <Typography variant="h6" color="inherit" className={classes.grow}>
-          {isAuthenticated ? (
-            <Link to="/shop">Shopping List</Link>
-          ) : (
-            <Link to="/">Shopping</Link>
-          )}
+          {isAuthenticated ? <Link to="/shop">Shopping List</Link> : <Link to="/">Shopping</Link>}
         </Typography>
         {isAuthenticated ? authLinks : guestLinks}
       </Toolbar>

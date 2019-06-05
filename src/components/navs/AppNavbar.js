@@ -105,6 +105,7 @@ const AppNavbar = props => {
   const { isAuthenticated = false, user = null } = auth;
 
   const [open, setOpen] = useState(false);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };

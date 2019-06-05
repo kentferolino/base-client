@@ -17,7 +17,9 @@ const Shopping = ({ auth, addItemAction }) => {
   return (
     <div>
       {isAuthenticated ? (
-        <Button onClick={toggle}>Add Items</Button>
+        <Button variant="contained" onClick={toggle} color="primary">
+          Add Items
+        </Button>
       ) : (
         <h4 className="mb-3 ml-4">Please login to manage items</h4>
       )}
