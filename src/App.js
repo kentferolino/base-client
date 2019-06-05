@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import store from './store';
 import { loadUser } from './actions/authActions';
-import Main from './components/Main';
+import Main from './Main';
 
 class App extends Component {
   componentDidMount() {

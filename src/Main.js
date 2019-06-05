@@ -3,11 +3,11 @@ import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Shopping from './Shopping';
-import Home from './Home';
-import Front from './Front';
-import AppNavbar from './navs/AppNavbar';
-import { addItem } from '../actions/itemActions';
+import Shopping from './pages/Shopping';
+import Home from './pages/Home';
+import Front from './components/Front';
+import AppNavbar from './components/navs/AppNavbar';
+import { addItem } from './actions/itemActions';
 
 const styles = theme => ({
   root: {

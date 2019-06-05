@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import ShoppingList from './ShoppingList';
-import ItemModal from './ItemModal';
+import ShoppingList from '../components/ShoppingList';
+import ItemModal from '../components/ItemModal';
 
 const Shopping = ({ auth, addItemAction }) => {
   const [itemModal, setItemModal] = useState(false);
