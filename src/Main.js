@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Front from './components/Front';
 import AppNavbar from './components/navs/AppNavbar';
 import { addItem } from './actions/itemActions';
+import ChangePW from './pages/ChangePW';
 
 const styles = theme => ({
   root: {
@@ -80,6 +81,7 @@ const Main = ({ auth, classes, addItemAction }) => {
               }}
             />
             <PrivateRoute path="/home" component={Home} auth={auth} />
+            <PrivateRoute path="/changepw" component={ChangePW} auth={auth} />
             <PrivateRoute
               path="/shop"
               component={Shopping}

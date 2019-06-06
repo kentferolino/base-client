@@ -5,6 +5,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { logout } from '../../actions/authActions';
 
 const UserMenu = ({ name, logoutAction }) => {
@@ -42,7 +43,9 @@ const UserMenu = ({ name, logoutAction }) => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
+        <MenuItem component={Link} to="/changepw" button>
+          Change Password
+        </MenuItem>
         <MenuItem onClick={logoutAction}>Logout</MenuItem>
       </Menu>
     </Fragment>

@@ -30,7 +30,7 @@ ItemModal.propTypes = {
 };
 
 ItemModal.defaultProps = {
-  item: { _id: null, name: null },
+  item: { _id: null, name: '' },
 };
 
 export default ItemModal;
