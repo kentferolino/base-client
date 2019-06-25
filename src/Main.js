@@ -36,11 +36,11 @@ function PrivateRoute({ component: AuthComponent, auth, ...rest }) {
         auth.isAuthenticated ? (
           <AuthComponent {...props} {...rest} auth={auth} />
         ) : (
-            <Redirect
-              to={{
-                pathname: '/',
-              }}
-            />
+          <Redirect
+            to={{
+              pathname: '/',
+            }}
+          />
           )
       }
     />
