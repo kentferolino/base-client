@@ -10,12 +10,13 @@ import { Link } from 'react-router-dom';
 import RegisterModal from '../auth/RegisterModal';
 import UserMenu from './UserMenu';
 
+
 const Navbar = props => {
   const { classes, open, doDrawerOpen, isAuthenticated = false, user = null } = props;
 
   const authLinks = (
     <Fragment>
-      <span className="navbar-text mr-3">
+      <span>
         <UserMenu name={user ? user.name : ''} />
       </span>
     </Fragment>
@@ -34,7 +35,7 @@ const Navbar = props => {
         [classes.appBarShift]: open,
       })}
     >
-      <Toolbar disableGutters={!open}>
+      <Toolbar>
         {isAuthenticated && (
           <IconButton
             color="inherit"
