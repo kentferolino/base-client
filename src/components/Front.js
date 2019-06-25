@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import LoginForm from "./auth/LoginForm";
 import { login } from '../actions/authActions';
 
-const Front = ({ loginAction, error: { msg = {}, id: errorId = null, } }) => {
+const Front = ({ loginAction, error }) => {
+  const { msg = {}, id: errorId = null, } = error;
   const [loginFormValues, setFormValues] = useState({ email: '', password: '' });
   const { email, password } = loginFormValues;
 
@@ -41,6 +43,14 @@ const Front = ({ loginAction, error: { msg = {}, id: errorId = null, } }) => {
       </Container>
     </div>
   );
+};
+
+Front.propTypes = {
+  loginAction: PropTypes.func.isRequired,
+  error: PropTypes.shape({
+    msg: PropTypes.instanceOf(Object).isRequired,
+    errorId: PropTypes.string,
+  }).isRequired
 };
 
 const mapStateToProps = state => ({

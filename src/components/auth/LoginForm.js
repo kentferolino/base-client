@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -56,6 +57,17 @@ const LoginForm = ({ onChange, onSubmit, toggle, isModal = false }) => {
       </Button>
     </>
   );
+}
+
+LoginForm.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  toggle: PropTypes.func.isRequired,
+  isModal: PropTypes.bool
+};
+
+LoginForm.defaultProps = {
+  isModal: false
 }
 
 export default LoginForm;

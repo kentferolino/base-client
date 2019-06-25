@@ -8,7 +8,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { Link } from 'react-router-dom';
 import RegisterModal from '../auth/RegisterModal';
-import LoginModal from '../auth/LoginModal';
 import UserMenu from './UserMenu';
 
 const Navbar = props => {
@@ -25,7 +24,6 @@ const Navbar = props => {
   const guestLinks = (
     <Fragment>
       <RegisterModal />
-      <LoginModal />
     </Fragment>
   );
 

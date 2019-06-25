@@ -40,10 +40,6 @@ const ShoppingList = ({
     deleteItemAction(id);
   };
 
-  // const onEditClick = id => {
-  //   editItemAction(id);
-  // };
-
   useEffect(() => {
     getItemsAction();
   }, []);
