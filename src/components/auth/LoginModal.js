@@ -75,7 +75,7 @@ const LoginModal = ({
               {errorMessage}
             </DialogContentText>
           ) : null}
-          <LoginForm classes={classes} onChange={onChange} onSubmit={onSubmit} toggle={toggle} />
+          <LoginForm onChange={onChange} onSubmit={onSubmit} toggle={toggle} isModal />
         </DialogContent>
       </Dialog>
     </div>

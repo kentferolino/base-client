@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const LoginForm = ({ onChange, onSubmit, toggle, }) => {
+const LoginForm = ({ onChange, onSubmit, toggle, isModal = false }) => {
 
   const classes = useStyles();
 
@@ -34,12 +34,17 @@ const LoginForm = ({ onChange, onSubmit, toggle, }) => {
         onChange={onChange}
         fullWidth
       />
-      <Button
-        onClick={toggle}
-        className={classes.submit}
-      >
-        Cancel
-      </Button>
+      {
+        isModal && (
+          <Button
+            onClick={toggle}
+            className={classes.submit}
+            modal={isModal}
+          >
+            Cancel
+          </Button>
+        )
+      }
       <Button
         type="submit"
         variant="contained"
