@@ -100,8 +100,7 @@ const styles = theme => ({
   },
 });
 
-const AppNavbar = props => {
-  const { classes, theme, auth } = props;
+const AppNavbar = ({ classes, theme, auth }) => {
   const { isAuthenticated = false, user = null } = auth;
 
   const [open, setOpen] = useState(false);

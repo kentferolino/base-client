@@ -33,7 +33,9 @@ const ItemForm = ({ action, toggle, item }) => {
         value={values.name}
       />
       <DialogActions>
-        <Button onClick={onSubmit}>Submit</Button>
+        <Button type="submit" variant="contained" color="primary" onClick={onSubmit}>
+          Submit
+        </Button>
       </DialogActions>
     </>
   );

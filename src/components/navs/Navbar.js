@@ -11,8 +11,7 @@ import RegisterModal from '../auth/RegisterModal';
 import UserMenu from './UserMenu';
 
 
-const Navbar = props => {
-  const { classes, open, doDrawerOpen, isAuthenticated = false, user = null } = props;
+const Navbar = ({ classes, open, doDrawerOpen, isAuthenticated = false, user = null }) => {
 
   const authLinks = (
     <Fragment>
