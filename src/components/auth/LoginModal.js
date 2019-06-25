@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import { makeStyles } from '@material-ui/core/styles';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -19,11 +18,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
   },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
 }))
-
 
 const LoginModal = ({
   isAuthenticated = false,

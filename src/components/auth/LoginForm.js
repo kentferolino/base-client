@@ -1,8 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
 
-const LoginForm = ({ classes, onChange, onSubmit, toggle, }) => {
+const useStyles = makeStyles((theme) => ({
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}))
+
+const LoginForm = ({ onChange, onSubmit, toggle, }) => {
+
+  const classes = useStyles();
 
   return (
     <>
