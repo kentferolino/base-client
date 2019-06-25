@@ -42,7 +42,7 @@ const UserMenu = ({ name, logoutAction }) => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <MenuItem component={Link} to="/updateProfile" button>Profile</MenuItem>
         <MenuItem component={Link} to="/changepw" button>
           Change Password
         </MenuItem>

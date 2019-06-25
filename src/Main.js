@@ -9,6 +9,7 @@ import Front from './components/Front';
 import AppNavbar from './components/navs/AppNavbar';
 import { addItem } from './actions/itemActions';
 import ChangePW from './pages/ChangePW';
+import UserProfile from './pages/UserProfile';
 
 const styles = theme => ({
   root: {
@@ -35,12 +36,12 @@ function PrivateRoute({ component: AuthComponent, auth, ...rest }) {
         auth.isAuthenticated ? (
           <AuthComponent {...props} {...rest} auth={auth} />
         ) : (
-          <Redirect
-            to={{
-              pathname: '/',
-            }}
-          />
-        )
+            <Redirect
+              to={{
+                pathname: '/',
+              }}
+            />
+          )
       }
     />
   );
@@ -82,6 +83,7 @@ const Main = ({ auth, classes, addItemAction }) => {
             />
             <PrivateRoute path="/home" component={Home} auth={auth} />
             <PrivateRoute path="/changepw" component={ChangePW} auth={auth} />
+            <PrivateRoute path="/updateProfile" component={UserProfile} auth={auth} />
             <PrivateRoute
               path="/shop"
               component={Shopping}

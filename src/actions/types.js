@@ -13,3 +13,5 @@ export const REGISTER_FAIL = 'REGISTER_FAIL';
 export const GET_ERRORS = 'GET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const UPDATE_ITEM = 'UPDATE_ITEM';
+export const UPDATE_USER_FAIL = 'UPDATE_USER_FAIL';
+export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
