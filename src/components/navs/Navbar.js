@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { Link } from 'react-router-dom';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import RegisterModal from '../auth/RegisterModal';
 import UserMenu from './UserMenu';
 
@@ -48,7 +48,10 @@ const Navbar = ({ classes, open, doDrawerOpen, isAuthenticated = false, user = n
           </IconButton>
         )}
         <Typography variant="h6" color="inherit" className={classes.grow}>
-          {isAuthenticated ? <Link to="/shop">Shopping List</Link> : <Link to="/">Shopping</Link>}
+          <>
+            <ShoppingCartIcon />
+            Shopping
+          </>
         </Typography>
         {isAuthenticated ? authLinks : guestLinks}
       </Toolbar>

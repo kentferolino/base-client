@@ -8,9 +8,14 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  actionDiv: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
 }))
 
-const LoginForm = ({ onChange, onSubmit, toggle, isModal = false }) => {
+const LoginForm = ({ onChange, onSubmit }) => {
 
   const classes = useStyles();
 
@@ -35,26 +40,17 @@ const LoginForm = ({ onChange, onSubmit, toggle, isModal = false }) => {
         onChange={onChange}
         fullWidth
       />
-      {
-        isModal && (
-          <Button
-            onClick={toggle}
-            className={classes.submit}
-            modal={isModal}
-          >
-            Cancel
-          </Button>
-        )
-      }
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        className={classes.submit}
-        onClick={onSubmit}
-      >
-        Save
-      </Button>
+      <div className={classes.actionDiv}>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          onClick={onSubmit}
+        >
+          Save
+        </Button>
+      </div>
     </>
   );
 }
@@ -62,12 +58,6 @@ const LoginForm = ({ onChange, onSubmit, toggle, isModal = false }) => {
 LoginForm.propTypes = {
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  toggle: PropTypes.func.isRequired,
-  isModal: PropTypes.bool
 };
-
-LoginForm.defaultProps = {
-  isModal: false
-}
 
 export default LoginForm;

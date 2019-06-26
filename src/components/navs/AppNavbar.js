@@ -12,8 +12,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import { AddShoppingCart, Build, Home } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 import Navbar from './Navbar';
 
@@ -22,21 +21,25 @@ const routes = [
     path: '/',
     main: () => <h2>Home</h2>,
     label: 'Home',
+    icon: () => <Home />
   },
   {
     path: '/shop',
     main: () => <h2>Shop</h2>,
     label: 'Shop',
+    icon: () => <AddShoppingCart />
   },
   {
     path: '/bubblegum',
     main: () => <h2>Bubblegum</h2>,
     label: 'Bubblegum',
+    icon: () => <Build />
   },
   {
     path: '/shoelaces',
     main: () => <h2>Shoelaces</h2>,
     label: 'Shoelaces',
+    icon: () => <Build />
   },
 ];
 
@@ -145,9 +148,9 @@ const AppNavbar = ({ classes, theme, auth }) => {
           </div>
           <Divider />
           <List>
-            {routes.map((route, index) => (
+            {routes.map((route) => (
               <ListItem component={Link} to={route.path} key={route.path} button>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                <ListItemIcon>{route.icon()}</ListItemIcon>
                 <ListItemText primary={route.label} />
               </ListItem>
             ))}
