@@ -10,7 +10,9 @@ import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
   UPDATE_USER_FAIL,
-  UPDATE_USER_SUCCESS
+  UPDATE_USER_SUCCESS,
+  UPDATE_PW_SUCCESS,
+  UPDATE_PW_FAIL,
 } from './types';
 
 // Setup config/headers and token
@@ -111,6 +113,38 @@ export const login = ({ email, password }) => dispatch => {
 };
 
 // Update user
+export const changePassword = ({ currentPW, newPW, rNewPW }) => (dispatch, getState) => {
+  // Headers
+  const config = tokenConfig(getState);
+
+  // Request body
+  const body = JSON.stringify({ currentPW, newPW, rNewPW });
+
+  if (newPW !== rNewPW) {
+    dispatch(returnErrors({ msg: 'Passwords are not the same.' }, '', 'UPDATE_PW_FAIL'));
+  } else {
+    dispatch(returnErrors({ msg: 'Not yet Implemented.' }, '', 'UPDATE_PW_FAIL'));
+    // axios
+    //   .put('/api/users/changePW', body, config)
+    //   .then(() =>
+    //     // No reducer yet.
+    //     dispatch({
+    //       type: UPDATE_PW_SUCCESS,
+    //     }),
+    //   )
+    //   .catch(err => {
+    //     dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_PW_FAIL'));
+    //     // No reducer yet.
+    //     dispatch({
+    //       type: UPDATE_PW_FAIL,
+    //     });
+    //   });
+  }
+
+
+};
+
+// Update user
 export const updateUserInfo = ({ name, email }) => (dispatch, getState) => {
   // Headers
   const config = tokenConfig(getState);
@@ -127,7 +161,7 @@ export const updateUserInfo = ({ name, email }) => (dispatch, getState) => {
       }),
     )
     .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_USER_FAIL'));
+      dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_PASSWORD_FAIL'));
       dispatch({
         type: UPDATE_USER_FAIL,
       });
