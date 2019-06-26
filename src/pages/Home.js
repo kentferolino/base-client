@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Home = () => {
-  return <div>Home. Click shopping list in Navbar to go to shopping list.</div>;
+  return <div>Home. Click shopping cart in the side nav to View Shopping Mini App.</div>;
 };
 
 export default Home;
