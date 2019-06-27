@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Route, Redirect } from 'react-router-dom';
+import { Route, Redirect, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -36,11 +36,11 @@ function PrivateRoute({ component: AuthComponent, auth, ...rest }) {
         auth.isAuthenticated ? (
           <AuthComponent {...props} {...rest} auth={auth} />
         ) : (
-          <Redirect
-            to={{
-              pathname: '/',
-            }}
-          />
+            <Redirect
+              to={{
+                pathname: '/',
+              }}
+            />
           )
       }
     />
@@ -74,22 +74,30 @@ const Main = ({ auth, classes, addItemAction }) => {
           <AppNavbar auth={auth} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <Route
-              exact
-              path="/"
-              render={() => {
-                return auth.isAuthenticated ? <Home auth={auth} /> : <Front />;
-              }}
-            />
-            <PrivateRoute path="/home" component={Home} auth={auth} />
-            <PrivateRoute path="/changepw" component={ChangePW} auth={auth} />
-            <PrivateRoute path="/updateProfile" component={UserProfile} auth={auth} />
-            <PrivateRoute
-              path="/shop"
-              component={Shopping}
-              auth={auth}
-              addItemAction={addItemAction}
-            />
+            <Switch>
+              <PrivateRoute path="/home" component={Home} auth={auth} />
+              <PrivateRoute path="/changepw" component={ChangePW} auth={auth} />
+              <PrivateRoute path="/updateProfile" component={UserProfile} auth={auth} />
+              <PrivateRoute
+                path="/shop"
+                component={Shopping}
+                auth={auth}
+                addItemAction={addItemAction}
+              />
+              <Route
+                exact
+                path="/"
+                render={() => {
+                  return auth.isAuthenticated ? <Home auth={auth} /> : <Front />;
+                }}
+              />
+              <Route
+                path="*"
+                render={() => {
+                  return "404 Route Not Found.";
+                }}
+              />
+            </Switch>
           </main>
         </div>
       )}
