@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { returnErrors } from './errorActions';
+import { returnErrors, clearErrors } from './errorActions';
 import {
   USER_LOADING,
   USER_LOADED,
@@ -103,6 +103,7 @@ export const login = ({ email, password }) => dispatch => {
         type: LOGIN_SUCCESS,
         payload: res.data,
       }),
+      dispatch(clearErrors()),
     )
     .catch(err => {
       dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
@@ -145,12 +146,12 @@ export const changePassword = ({ currentPW, newPW, rNewPW }) => (dispatch, getSt
 };
 
 // Update user
-export const updateUserInfo = ({ name, email }) => (dispatch, getState) => {
+export const updateUserInfo = ({ name, email, birthdate, gender }) => (dispatch, getState) => {
   // Headers
   const config = tokenConfig(getState);
 
   // Request body
-  const body = JSON.stringify({ name, email });
+  const body = JSON.stringify({ name, email, birthdate, gender });
 
   axios
     .put('/api/users/updateInfo', body, config)

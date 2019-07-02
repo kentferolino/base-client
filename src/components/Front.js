@@ -56,7 +56,7 @@ const Front = ({ loginAction, error }) => {
         <Card>
           <CardHeader title="Login" className={classes.cardHeader} />
           <CardContent className={classes.cardContent}>
-            <div style={{ color: 'red' }}>Please login. Username: kent@admin.com. Password: admin.</div>
+            <div style={{ color: 'blue' }}>Please login. Username: kent@admin.com. Password: admin.</div>
             {errorMessage ? (
               <Typography color="secondary">{errorMessage}</Typography>
             ) : null}
