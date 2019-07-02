@@ -113,7 +113,7 @@ export const login = ({ email, password }) => dispatch => {
     });
 };
 
-// Update user
+// Chnage user password
 export const changePassword = ({ currentPW, newPW, rNewPW }) => (dispatch, getState) => {
   // Headers
   const config = tokenConfig(getState);
@@ -124,25 +124,24 @@ export const changePassword = ({ currentPW, newPW, rNewPW }) => (dispatch, getSt
   if (newPW !== rNewPW) {
     dispatch(returnErrors({ msg: 'Passwords are not the same.' }, '', 'UPDATE_PW_FAIL'));
   } else {
-    dispatch(returnErrors({ msg: 'Not yet Implemented.' }, '', 'UPDATE_PW_FAIL'));
-    // axios
-    //   .put('/api/users/changePW', body, config)
-    //   .then(() =>
-    //     // No reducer yet.
-    //     dispatch({
-    //       type: UPDATE_PW_SUCCESS,
-    //     }),
-    //   )
-    //   .catch(err => {
-    //     dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_PW_FAIL'));
-    //     // No reducer yet.
-    //     dispatch({
-    //       type: UPDATE_PW_FAIL,
-    //     });
-    //   });
+    axios
+      .put('/api/auth/changePW', body, config)
+      .then(res =>
+        // No reducer yet.
+        dispatch({
+          type: UPDATE_PW_SUCCESS,
+          payload: res.data,
+        }),
+
+      )
+      .catch(err => {
+        dispatch(returnErrors(err.response.data, err.response.status, 'UPDATE_PW_FAIL'));
+        // No reducer yet.
+        dispatch({
+          type: UPDATE_PW_FAIL,
+        });
+      });
   }
-
-
 };
 
 // Update user

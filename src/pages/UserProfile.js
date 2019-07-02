@@ -93,9 +93,6 @@ const UserProfile = ({ updateUserInfoAction, auth }) => {
               />
             </Grid>
             <Grid item xs={12}>
-              {birthdate.toString()}
-            </Grid>
-            <Grid item xs={12}>
               <FormControl component="fieldset" className={classes.formControl}>
                 <FormLabel component="legend">Gender</FormLabel>
                 <RadioGroup

@@ -9,6 +9,7 @@ import {
   REGISTER_FAIL,
   UPDATE_USER_FAIL,
   UPDATE_USER_SUCCESS,
+  UPDATE_PW_SUCCESS
 } from "../actions/types";
 
 const initialState = {
@@ -37,6 +38,7 @@ export default function (state = initialState, action) {
         user: action.payload
       }
     case LOGIN_SUCCESS:
+    case UPDATE_PW_SUCCESS:
     case REGISTER_SUCCESS:
       localStorage.setItem('token', action.payload.token);
       return {
